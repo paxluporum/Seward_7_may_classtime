@@ -16,6 +16,10 @@ follower = new GameObject();
 follower.x = 20;
 follower.y = 20;
 follower.color = "#0000ff";
+follower.force = 1;
+
+var fX = .90;
+var fY = .90;
 
 function animate()
 {
@@ -54,6 +58,32 @@ function angularMovement()
         player.angle += 2;
     }
 
+    player.vx *= fX;
+    player.vy *= fY;
     player.move();
+    follow();
 }
 
+function point()
+{
+    var dx = player.x - follower.x;
+    var dy = player.y - follower.y;
+
+    var radians = Math.atan2(dy,dx);
+    follower.angle = radians * 180/Math.PI;
+}
+
+function follow()
+{
+    var dx = player.x - follower.x;
+    var dy = player.y - follower.y;
+
+    var radians = Math.atan2(dy,dx);
+    follower.angle = radians * 180/Math.PI;
+
+    follower.vx = Math.cos(radians) *follower.force;
+    follower.vy = Math.sin(radians) *follower.force;
+
+    follower.x += follower.vx * 2;
+    follower.y += follower.vy * 2;
+}
