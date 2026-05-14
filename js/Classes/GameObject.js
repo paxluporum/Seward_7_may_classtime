@@ -11,6 +11,7 @@ function GameObject(obj)
 		this.ay = 1;
 		this.vx = 0;
 		this.vy = 0;
+		this.angle = 0;
 
 	//whether or not the object can jump
 	this.canJump = false;
@@ -51,6 +52,21 @@ function GameObject(obj)
 		context.restore();
 		
 	}	
+
+	this.drawTriangle = function()
+	{
+		context.save();
+		context.fillStyle = this.color;
+		context.translate(this.x, this.y);
+		context.rotate(this.angle * Math.PI/180);
+		context.beginPath();
+		context.moveTo(0+this.width/2,0);
+		context.lineTo(0-this.width/2,0-this.height/4);
+		context.lineTo(0-this.width/2, 0 + this.height/4);
+		context.closePath();
+		context.fill();
+		context.restore();
+	}
 	
 	this.move = function()
 	{

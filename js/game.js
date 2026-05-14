@@ -1,48 +1,59 @@
-	//----------------------------------------------------------Instructions------------------------------------------------
-	//---------------------In this assignment you will draw a lazy version of the "matrix"----------------------------------
-	//---------------------You will recalculate some particles positions and colors when they move off screen---------------
-	//---------------------Follow the commented instructions below to complete this assignment------------------------------
-
 var canvas;
 var context;
 
 
 var player;
-
 /// handle timing and frame regulation
 var interval = 1000/60;
 var timer = setInterval(animate, interval);
 
-var colors = [];
-colors[0] = "#ff0000";
-colors[1] = "#00ff00";
-colors[2] = "#0000ff";
+canvas = document.getElementById("canvas");
+context = canvas.getContext("2d");	
 
-var amount = 50;
-
-	canvas = document.getElementById("canvas");
-	context = canvas.getContext("2d");	
-
-var dots = [];
-for (var i=0;i <amount; i++)
-{
-    dots[i] = new GameObject();
-    dots[i].x = Math.random() * canvas.width;
-    dots[i].y = Math.random() * canvas.height;
-    dots[i].color = colors[Math.floor(rand(0,2.9))];
-    dots[i].width = rand (5,20);
-}
-
-
-
+player = new GameObject();
+player.force = 1;
+follower = new GameObject();
+follower.x = 20;
+follower.y = 20;
+follower.color = "#0000ff";
 
 function animate()
 {
     context.clearRect(0,0,canvas.clientWidth, canvas.height);
-    
-    for (i=0; i<amount; i++)
+    angularMovement();
+    player.drawTriangle();
+    follower.drawTriangle();
+}
+
+function angularMovement()
+{
+    if(w)
     {
-        dots[i].drawCircle();
+        var radians = player.angle * Math.PI/180;
+        player.ax = Math.cos(radians);
+        player.ay = Math.sin(radians);
+
+        player.vx += player.ax * player.force;
+        player.vy += player.ay * player.force;
     }
+        if(s)
+    {
+        var radians = player.angle * Math.PI/180;
+        player.ax = Math.cos(radians);
+        player.ay = Math.sin(radians);
+
+        player.vx += player.ax * -player.force;
+        player.vy += player.ay * -player.force;
+    }
+    if(a)
+    {
+        player.angle -= 2;
+    }
+    if (d)
+    {
+        player.angle += 2;
+    }
+
+    player.move();
 }
 
